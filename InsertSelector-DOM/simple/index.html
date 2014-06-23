@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Lang" content="en">
+		<meta name="author" content="">
+		<meta http-equiv="Reply-to" content="@.com">
+		<meta name="generator" content="PhpED 6.0">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="creation-date" content="06/01/2011">
+		<meta name="revisit-after" content="15 days">
+		<title>Array Selector</title>
+		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<style>
+			body{
+				padding-top:50px;
+				width:350px;
+				margin-right:auto;
+				margin-left:auto;
+				background-color: #eee;
+			}
+
+			.form{
+				background-color: #fff;
+				padding:10px;
+				text-align:center;
+				border-width: 1px;
+				border-style: solid;
+				border-color:#ddd;
+				box-shadow: 5px 5px 5px #888888;
+				border-radius: 5px;
+			}
+
+			#menos{
+				margin-left:5px;
+			}
+			
+			#mas-div{
+			 	padding:10px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="form">
+			<h3 class="text-primary">Selector</h3>
+			<form action="mostrar.php" method="post" onsubmit="selectAll()" role="form" class="form-inline">
+				<select id="select" name="opciones[]" class="form-control" multiple>
+					<option >Opcion 1</option>
+					<option >Opcion 2</option> 
+				</select><button id="menos" type="button" onClick="quit()" class="btn btn-lg btn-default"> - </button><br>
+				<div class="form-group" id="mas-div" >
+					<input type="text" id="mas" placeholder="text">
+					<button class="btn btn-lg btn-default" onclick="add()" type="button"> + </button> <br>
+				</div>
+				<button class="btn btn-lg btn-block btn-primary" type="submit">Enviar</button>
+			</form>
+
+		</div>
+	</body>
+	<script>
+		function add(){ 		
+			var txt=document.getElementById("mas").value;
+			var select=document.getElementById("select");
+			var opcion=document.createElement("option");
+			var txt=document.createTextNode(txt);
+			opcion.appendChild(txt);
+			select.appendChild(opcion); 
+			document.getElementById("mas").value=""; 
+		}
+
+		function quit(){
+
+			var select=document.getElementById("select");
+			var elem=select.options[select.selectedIndex];
+			select.removeChild(elem);  
+		}
+
+		function selectAll(){
+			select=document.getElementById("select");
+			for (var i = 0; i < select.options.length; i++) { 
+				select.options[i].selected = true;
+			} 
+		}
+	</script>
+</html>

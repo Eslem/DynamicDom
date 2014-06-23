@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Lang" content="en">
+		<meta name="author" content="">
+		<meta http-equiv="Reply-to" content="@.com">
+		<meta name="generator" content="PhpED 6.0">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="creation-date" content="06/01/2011">
+		<meta name="revisit-after" content="15 days">
+		<title>Inputs</title>
+		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<script src="../../re/jquery.min.js"></script>
+		<style>
+			body{
+				padding-top:50px;
+				width:1000px;
+				margin-right:auto;
+				margin-left:auto;
+				background-color: #eee;
+			}
+
+			.form{
+				width: 350px;
+				background-color: #fff;
+				padding:10px;
+				text-align:center;
+				border-width: 1px;
+				border-style: solid;
+				border-color:#ddd;
+				box-shadow: 5px 5px 20px #888888;
+				border-radius: 5px;
+			}
+
+			#menos{
+				margin-left:5px;
+			}
+
+			#mas-div{
+				padding:10px;
+			}
+
+			.block{
+				display:inline-block;
+				margin-left:15px;
+			}
+
+			#send{
+				width:400px;
+				margin-top:30px;
+				margin-right:375px;
+				margin-left:auto;
+			}
+
+		</style>
+	</head>
+	<body onload="first()">
+		<div class=" block form " >
+			<h3 class="text-primary">Padre</h3>
+			<select id="padre"  onchange="padre()">
+
+			</select>
+		</div>
+
+		<div class="block form" >
+			<h3 class="text-primary">Hijo</h3>
+			<select id="hijo" name="name[]" multiple>
+
+			</select>
+			<button class="btn btn-default" onClick="add()"> + </button>
+		</div>
+
+		<div class="form" id="send" >
+			<h3 class="text-primary">Formulario</h3>
+			<form id="form" action="mostrar.php" method="post" role="form" class="form-inline">
+				<div class="form-group" id="a-enviar" >
+
+				</div><br>
+				<button class="btn btn-lg btn-block btn-primary" type="submit">Enviar</button>
+			</form>
+		</div>
+
+	</body>
+	<script>
+
+		function first(){
+			$.post("consulta.php",{ wth:"users"},
+				function(data, status){
+					$("#padre").html(data); 
+					padre(); 
+			});
+		}
+
+		function limpiar(){
+			var hijo=document.getElementById("hijo");
+			var child=hijo.firstChild;
+
+			while( child){
+				hijo.removeChild(child);
+				var child=hijo.firstChild;
+
+			}
+
+		}
+
+		function padre(){
+			limpiar();
+			var user=$("#padre option:selected").val();
+			$.post("consulta.php", {
+			 	wth:"tel",
+			 	user:user
+			},function(data, status){
+					$("#hijo").html(data);
+			}); 
+		}
+
+		function add(){
+			var hijo=document.getElementById("hijo");
+			var selected=hijo.options;
+			var form= document.getElementById("a-enviar");
+			for( var x=0; x<selected.length; x++){
+				if(selected[x].selected){
+					var div =document.createElement("div");
+					var input=document.createElement("input");
+					var boton=document.createElement("button");
+
+					input.type='text';
+					input.name="input[]";
+					input.value=selected[x].value;
+					input.readOnly=true;
+
+					boton.id="boton";
+					boton.innerHTML=" - ";
+					boton.className="btn btn-danger";
+					boton.onclick=function(){
+						form.removeChild(div);
+					};
+
+					div.appendChild(input);
+					div.appendChild(boton);
+
+					form.appendChild(div);
+				}
+			}
+		}
+	</script>
+</html>
